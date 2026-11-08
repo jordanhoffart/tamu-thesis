@@ -28,33 +28,34 @@ If you encounter any difficulty incorporating any of your existing work into thi
 As a final note, you are advised to avoid numbering equations of minor importance and to use \verb|\eqref| to reference equations in-text, so that these references may be formatted as in the previous example.
 
 \section{Algorithms, Code, and Pseudocode}
-Common packages for generating pseudocode such as \texttt{algorithm2e} and \texttt{algorithm} are currently incompatible with PDF tagging; however, simpler packages such as \texttt{algpseudocode} work at this time:
+The \texttt{algorithm} package works with tagging in recent releases of \LaTeX; combined with \texttt{algpseudocode}, it produces floating, captioned pseudocode such as Algorithm~\ref{alg:dijkstra}.
+Older releases, such as the one in Overleaf's static \TeX\ Live 2026 image, cannot compile it, so \texttt{preamble.tex} replaces it there with a non-floating version that looks the same.
+Other pseudocode packages, such as \texttt{algorithm2e}, may not support tagging; check the compatibility table linked in \autoref{ch:usage} before using one.
 
-\noindent
-\rule{\textwidth}{0.4pt}\\[-3pt]
-\textbf{Algorithm 1: Dijkstra's Algorithm}\\[-5pt]
-\rule{\textwidth}{0.4pt}
+\begin{algorithm}
+  \caption{Dijkstra's algorithm}\label{alg:dijkstra}
+  \begin{algorithmic}[1]
+    \Require Graph \(G = (V, E)\) with edge weights \(w\), source \(s \in V\)
+    \Ensure Shortest-path distances \(d\) from \(s\)
+    \Procedure{dijkstra}{$G, w, s$}
+      \For{each \(v \in V\)}
+        \State \(d[v] \gets \infty\)
+      \EndFor
+      \State \(d[s] \gets 0\)
+      \State \(Q \gets V\) \Comment{min-priority queue keyed on \(d\)}
+      \While{\(Q \neq \emptyset\)}
+        \State \(u \gets \Call{extract-min}{Q}\)
+        \For{each edge \((u, v) \in E\)}
+          \If{\(d[u] + w(u, v) < d[v]\)}
+            \State \(d[v] \gets d[u] + w(u, v)\)
+          \EndIf
+        \EndFor
+      \EndWhile
+      \State \Return \(d\)
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
 
-\begin{algorithmic}[1]
-  \Require Graph \(G\), source \(s\)
-  \Ensure Distance array \(d\)
-
-  \State Initialize \(d[v] \gets \infty\) for all \(v\)
-  \State \(d[s] \gets 0\)
-  \State Insert all vertices into priority queue \(Q\)
-
-  \While{\(Q \neq \emptyset\)}
-  \State \(u \gets \text{Extract-Min}(Q)\)
-  \For{each \((u,v) \in E\)}
-  \If{\(d[v] > d[u] + w(u,v)\)}
-  \State \(d[v] \gets d[u] + w(u,v)\)
-  \EndIf
-  \EndFor
-  \EndWhile
-
-  \State \Return \(d\)
-\end{algorithmic}
-%
 Actual code itself may be displayed using the \texttt{verbatim} environment, which generates a paragraph looking identical to the contents inside of it.
 Importantly, this content is read as such on a screen reader.
 \begin{verbatim}

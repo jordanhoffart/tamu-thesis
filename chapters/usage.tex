@@ -11,7 +11,6 @@ Formatting options that are not explicitly dictated by the Graduate and Professi
 A second major goal of this template is to help ensure that your thesis or dissertation meets the Web Content Accessibility Guidelines (WCAG) 2.1 Level~AA standards.
 With this template (and the \textit{latest} version of \LaTeX), most of the hard work is already done; your main task is simply to follow the rules in the following sections to ensure that all figures and tables are accessible.
 Beyond that, the main challenge you may encounter is that some commonly used packages in \LaTeX\ are currently incompatible with PDF tagging.
-As of October 2026, notable examples include \texttt{float}, \texttt{algorithm}, \texttt{algorithm2e}, \texttt{caption}, \texttt{footnote}, and \texttt{tikz-cd}.
 A comprehensive list of compatible and incompatible packages can be found in this
 \href{https://latex3.github.io/tagging-project/tagging-status/}{searchable table} from the \LaTeX\ Tagged PDF Project.
 
@@ -24,9 +23,9 @@ As such, much of the information that you gather online or with the aid of an LL
 The preamble for this document is located in \texttt{preamble.tex}.
 This is where you should load any packages that you need for your thesis and where you may toggle discretionary formatting options.
 Make sure that any packages you add are compatible with tagging.
-This can be done automatically by uncommenting the \texttt{check-tagging-status} key in \texttt{\backslash DocumentMetadata\{\}} and then checking the end of \texttt{main.log}.
+This can be done automatically by adding the \texttt{check-tagging-status} key to \texttt{\backslash DocumentMetadata\{\}} at the top of \texttt{main.tex} and then checking the end of \texttt{main.log}.
 Alternatively, you may check the \href{https://latex3.github.io/tagging-project/tagging-status/}{list of compatible and incompatible packages}.
-More importantly, the preamble sets up document encoding and metadata, and it loads the document class \texttt{tamuthesis}, which contains all of the formatting and accessibility settings that make this template comply with the Texas A\&M Graduate and Professional School Thesis and Dissertation Guidelines.
+More importantly, the top of \texttt{main.tex} sets up document encoding and metadata, and it loads the document class \texttt{tamuthesis}, which contains all of the formatting and accessibility settings that make this template comply with the Texas A\&M Graduate and Professional School Thesis and Dissertation Guidelines.
 Modifying, deleting, or omitting this class may result in a PDF that fails to meet these requirements.
 
 You should fill in the files found in the \texttt{preliminary} directory, which constitute the front matter (title page, abstract, dedications, etc.) of your thesis.
@@ -42,10 +41,10 @@ The option \texttt{<name>} determines how this section is titled in both the doc
 More information on building your bibliography can be found in \autoref{ch:make-bib}.
 
 \section{PDF Accessibility Checkers}\label{sec:checkers}
-As of October 2026, ISO 14289-2 (PDF/UA-2) is considered the ``gold standard'' for PDF accessibility, according to the \href{https://pdfa.org/iso-14289-2-pdf-ua-2-the-gold-standard-for-accessibility-in-pdf-2-0-has-arrived/}{PDF Association website}, which also links to several \href{https://pdfa.org/accessible-math-in-pdf-finally} {PDF accessibility checking tools}. If you wish to validate accessibility tagging in your thesis or dissertation, \href{https://pdf4wcag.com/}{PDF4WCAG} is an easy option. From this website, select ``Try validator,'' choose ``PDF/UA-2,'' and upload your PDF.
+ISO 14289-2 (PDF/UA-2) is currently considered the ``gold standard'' for PDF accessibility, according to the \href{https://pdfa.org/iso-14289-2-pdf-ua-2-the-gold-standard-for-accessibility-in-pdf-2-0-has-arrived/}{PDF Association website}, which also links to several \href{https://pdfa.org/accessible-math-in-pdf-finally} {PDF accessibility checking tools}. If you wish to validate accessibility tagging in your thesis or dissertation, \href{https://pdf4wcag.com/}{PDF4WCAG} is an easy option. From this website, select ``Try validator,'' choose ``PDF/UA-2,'' and upload your PDF.
 
 You might also try \href{https://demo.verapdf.org}{veraPDF}, another free online validation tool.
-As of October 2026, this template passed both of these PDF checkers. Additionally, \href{https://ngpdf.com/}{ngPDF} can convert your tagged PDF to HTML, which can be helpful for visual inspection of the document structure.
+This template has passed both of these PDF checkers. Additionally, \href{https://ngpdf.com/}{ngPDF} can convert your tagged PDF to HTML, which can be helpful for visual inspection of the document structure.
 
 \section{Custom Formatting Options and Ethos}\label{sec:customize}
 This template strictly enforces all formatting requirements mandated by Texas A\&M University.

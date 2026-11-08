@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}[2026-06-01]
-\ProvidesClass{tamuthesis}[2026/10/03 TAMU thesis v1.2.0]
+\ProvidesClass{tamuthesis}[2026/11/08 TAMU thesis v1.3.0]
 
 \LoadClass[12pt]{report}
 
@@ -123,17 +123,34 @@
 % Format titles for subheadings:
 
 % latex-lab formats headings through tagged "heading" templates, which we edit here
-%
-% Its keys change between releases, so we only restyle for sec-template versions
-% we have checked; add a line here after verifying a new one
-\@namedef{tamuthesis@secII@0.9g}{}
-\@ifundefined{tamuthesis@secII@\ltlabsecIIversion}
-{% unverified version: warn and keep latex-lab's default, rather than risk errors
-  \ClassWarning{tamuthesis}{%
-    Heading formatting unverified for latex-lab sec-template
-  \ltlabsecIIversion; using default style. Update tamuthesis.cls}%
-}
-{% "hang" keeps the number and title on one centered line
+% sec-template 2026-10-27 renamed keys (prefix->text) and 0pt->\maxdimen for "no space"
+\newif\if@tamuthesis@newheadings
+\IfPackageAtLeastTF{latex-lab-testphase-sec-template}{2026/10/27}
+{\@tamuthesis@newheadingstrue}
+{\@tamuthesis@newheadingsfalse}
+
+\if@tamuthesis@newheadings
+  \DeclareInstance{headformat}{tamuchapter}{hang}{
+    , heading-indent = 0pt
+    , separator-b    = \hspace{1em}
+  }
+  \EditInstance{heading}{chapter}{
+    , placement            = top
+    , after-penalty-vspace = \maxdimen
+    , after-vspace         = 20pt
+    , text                 = \NoValue
+    , punct                = .
+    , heading-decls        = \centering \normalfont \normalsize
+    \if@tamuthesis@boldheadings \bfseries \fi
+    , number-decls         = \normalsize
+    , title-decls          = \normalsize
+    , headformat-instance  = tamuchapter
+    , number-format        = \MakeUppercase{#1}
+    , title-format         = \MakeUppercase{#1}\par
+    , contents-extra       = % no space between chapters in the LoF & LoT
+  }
+\else
+  % "hang" keeps the number and title on one centered line
   % after-*-vspace pull the title to the top of the page
   % prefix (\@chapapp) is cleared for a bare "1."
   \DeclareInstance{headformat}{tamuchapter}{hang}{
@@ -154,31 +171,31 @@
     , number-format        = \MakeUppercase{\thechapter.}
     , contents-extra       = % no space between chapters in the LoF & LoT
   }
-  % for sections and lower, this applies to the normal and *'d alike
-  \EditInstance{heading}{section}{
-    , before-vspace = 2.5ex plus 1ex minus .2ex
-    , after-vspace  = 1.5ex plus .2ex
-    , heading-decls = \normalfont
-    \if@tamuthesis@italicsections \itshape \fi
-    \if@tamuthesis@boldsections \bfseries \fi
-    \if@tamuthesis@centersections \centering \fi
-  }
-  \EditInstance{heading}{subsection}{
-    , before-vspace = 2ex plus 1ex minus .2ex
-    , after-vspace  = 1ex plus .2ex
-    , heading-decls = \normalfont
-    \if@tamuthesis@italicsubsections \itshape \fi
-    \if@tamuthesis@boldsubsections \bfseries \fi
-    \if@tamuthesis@centersections \centering \fi
-  }
-  \EditInstance{heading}{subsubsection}{
-    , before-vspace = 1.5ex plus 1ex minus .2ex
-    , after-vspace  = 1ex plus .2ex
-    , heading-decls = \normalfont
-    \if@tamuthesis@italicsubsubsections \itshape \fi
-    \if@tamuthesis@boldsubsubsections \bfseries \fi
-    \if@tamuthesis@centersections \centering \fi
-  }
+\fi
+% for sections and lower, this applies to the normal and *'d alike
+\EditInstance{heading}{section}{
+  , before-vspace = 2.5ex plus 1ex minus .2ex
+  , after-vspace  = 1.5ex plus .2ex
+  , heading-decls = \normalfont
+  \if@tamuthesis@italicsections \itshape \fi
+  \if@tamuthesis@boldsections \bfseries \fi
+  \if@tamuthesis@centersections \centering \fi
+}
+\EditInstance{heading}{subsection}{
+  , before-vspace = 2ex plus 1ex minus .2ex
+  , after-vspace  = 1ex plus .2ex
+  , heading-decls = \normalfont
+  \if@tamuthesis@italicsubsections \itshape \fi
+  \if@tamuthesis@boldsubsections \bfseries \fi
+  \if@tamuthesis@centersections \centering \fi
+}
+\EditInstance{heading}{subsubsection}{
+  , before-vspace = 1.5ex plus 1ex minus .2ex
+  , after-vspace  = 1ex plus .2ex
+  , heading-decls = \normalfont
+  \if@tamuthesis@italicsubsubsections \itshape \fi
+  \if@tamuthesis@boldsubsubsections \bfseries \fi
+  \if@tamuthesis@centersections \centering \fi
 }
 
 %% Format TOC
@@ -354,8 +371,11 @@
 \ExplSyntaxOff
 
 \AddToHook{env/appendices/begin}{
-  \IfInstanceExistsT{headformat}{tamuchapter}
-  {\EditInstance{heading}{chapter}{prefix = \tamuthesis@appendixprefix}}
+  \if@tamuthesis@newheadings
+    \EditInstance{heading}{chapter}{text = \tamuthesis@appendixprefix}
+  \else
+    \EditInstance{heading}{chapter}{prefix = \tamuthesis@appendixprefix}
+  \fi
   \renewcommand{\p@chapter}{\tamuthesis@appendixprefix~}
   \AddToHook{cmd/chapter/before}{\@inappendixheadtrue}
   \AddToHook{cmd/chapter/after}{\@inappendixheadfalse}
