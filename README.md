@@ -20,9 +20,9 @@ remarks about digital accessibility in **LaTeX**.
 ## Local Compilation
 
 If you intend to compile the document on your own device, note that you must use
-`lualatex`. This template has been tested using `LuaHBTeX, Version 1.24.0`
-and the 2026-06-01 release of LaTeX, both included in an up-to-date
-[TeX Live 2026](https://tug.org/texlive/).
+`lualatex`. This template requires at least the 2026-06-01 release of LaTeX,
+included in [TeX Live 2026](https://tug.org/texlive/). Keeping TeX Live up to
+date is recommended, since newer releases keep improving tagging support.
 If you do not already have a recent TeX Live installation, you are *strongly*
 recommended to install one using the install script provided by the TeX Users
 Group (TUG); see their
@@ -45,6 +45,9 @@ You may find the following commands useful:
 
 If you wish to change the name of the `main` file, you will need to modify the
 first line of the `Makefile` appropriately.
+
+A `latexmkrc` file is included, so running `latexmk` directly also uses
+`lualatex`.
 
 If you do not wish to use `make` or `latexmk`, then you may compile the document
 using

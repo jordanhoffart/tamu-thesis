@@ -37,11 +37,13 @@ strip-template:
 		figs/mathbf.png \
 		tables/table.tex
 	@find . -name "*.aux" -delete
+	@sed -n '1,/^\\input{preamble}/p' main.tex > .main-head.tex
 	@rm -f main*
 	@: > backmatter/refs.bib
 	@sed -i.bak '/\\autoref{ch:usage}/d' preliminary/abstract.tex
 	@rm -f preliminary/abstract.tex.bak
-	@printf '%b' '% !TeX program = lualatex\n\n\\input{preamble}\n\n\\begin{document}\n\n\\input{preliminary/title-page}\n\n\\startpreliminary\n\n\\include{preliminary/abstract}\n\\include{preliminary/dedication}\n\\include{preliminary/acknowledgements}\n\\include{preliminary/contributors}\n\\include{preliminary/nomenclature}\n\n\\makecontents\n\n\\startmain\n\n% put your chapters here\n\n\\buildbibliography{References}\n\n%\\begin{appendices}\n% appendices here if you have them\n%\\end{appendices}\n\n\\end{document}\n' > main.tex
+	@{ cat .main-head.tex; printf '%b' '\n\\begin{document}\n\n\\input{preliminary/title-page}\n\n\\startpreliminary\n\n\\include{preliminary/abstract}\n\\include{preliminary/dedication}\n\\include{preliminary/acknowledgements}\n\\include{preliminary/contributors}\n\\include{preliminary/nomenclature}\n\n\\makecontents\n\n\\startmain\n\n% put your chapters here\n\n\\buildbibliography{References}\n\n%\\begin{appendices}\n% appendices here if you have them\n%\\end{appendices}\n\n\\end{document}\n'; } > main.tex
+	@rm -f .main-head.tex
 	@sed -i.bak 's/ strip-template//' Makefile
 	@sed -i.bak '/# STRIP-TEMPLATE-START/,/# STRIP-TEMPLATE-EN[D]/d' Makefile
 	@rm -f Makefile.bak
